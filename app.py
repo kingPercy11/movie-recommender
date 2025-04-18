@@ -21,7 +21,6 @@ def recommend(movie):
     recommended_movie_names = []
     recommended_movie_posters = []
     for i in distances[1:6]:
-        # fetch the movie poster
         movie_id = movies.iloc[i[0]].movie_id
         recommended_movie_posters.append(fetch_poster(movie_id))
         recommended_movie_names.append(movies.iloc[i[0]].title)
@@ -29,15 +28,16 @@ def recommend(movie):
     return recommended_movie_names,recommended_movie_posters
 
 
-st.header('Movie Recommender System')
+st.markdown(
+    "<h1 style='text-align: center; color: #FF4B4B;'>🎬 Movie Recommender 🎥</h1>",
+    unsafe_allow_html=True
+)
+st.write("### Find your next favorite movie below ")
 movies = pickle.load(open('model/movie_list.pkl','rb'))
 similarity = pickle.load(open('model/similarity.pkl','rb'))
 
 movie_list = movies['title'].values
-selected_movie = st.selectbox(
-    "Type or select a movie from the dropdown",
-    movie_list
-)
+selected_movie = st.selectbox("Enter movie name", movie_list)
 
 if st.button('Show Recommendation'):
     recommended_movie_names,recommended_movie_posters = recommend(selected_movie)
